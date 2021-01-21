@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>Добро пожаловать!</h1>
+<table border = "1">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Roles</th>
+        <th>Update</th>
+    </tr>
+    <tr th:each="person:${usersList}">
+        <td th:text="${person.getId()}"></td>
+        <td th:text="${person.getName()}"></td>
+        <td th:text="${person.getLastname()}"></td>
+        <td th:text="${person.getAge()}"></td>
+        <td th:text="${person.getEmail()}"></td>
+        <td th:text="${person.getPassword()}"></td>
+        <td th:text="${person.getRoles()}"></td>
+        <td>
+            <a th:href="@{/admin/edit/{id}(id=${person.getId()})}" th:text="Изменить"/>
+        </td>
+    </tr>
+</table>
+
+<br/>
+
+<h2>Добавить нового пользователя</h2>
+<form th:method="POST" th:action="@{/admin/create}" th:object="${user}">
+    <label for="name">Name:</label>
+    <input type="text" th:field="*{name}" id = "name">
+    <br/>
+    <label for="last_name">Last name: </label>
+    <input type="text" th:field="*{lastname}" id = "last_name">
+    <br/>
+    <label for="age">Age: </label>
+    <input type="text" th:field="*{age}" id = "age">
+    <br/>
+    <label for="email">Email: </label>
+    <input type="text" th:field="*{email}" id = "email">
+    <br/>
+    <label for="password">Password: </label>
+    <input type="text" th:field="*{password}" id = "password">
+    <br/>
+    <label for="role">Role: </label>
+    <input type="text" th:field="*{roles}" id = "role">
+    <br/>
+    </select>    <input type="submit" value="Добавить">
+</form>
+
+<br/>
+
+<h2>Удалить пользователя по ID</h2>
+<form th:method="DELETE" th:action="@{/admin/delete}" th:object="${userForDelete}">
+    <label for="id">ID: </label>
+    <input type="text" th:field="*{id}" id="id">
+    <input type="submit" value="Удалить">
+</form>
+
+<br/>
+<br/>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="LOGOUT">
+</form>
+</body>
+</html>
