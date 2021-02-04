@@ -25,12 +25,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
-        System.out.println("in handler");
         if (authentication.getAuthorities().contains(new Role("ADMIN"))){
             httpServletResponse.sendRedirect("/admin");
         } else {
-            long id =((User) (userDetailsService.loadUserByUsername(authentication.getName()))).getId();
-            httpServletResponse.sendRedirect("/user/" + id);
+            httpServletResponse.sendRedirect("/user");
         }
     }
 }

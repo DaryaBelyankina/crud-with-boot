@@ -1,6 +1,7 @@
 package ru.belyankina.crudwithboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,9 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/user/{id}")
-    public String getUserPage(@PathVariable long id, Model model){
-        model.addAttribute("user", userService.getUserById(id));
+    @GetMapping("/user")
+    public String getUserPage(Model model){
+        model.addAttribute("auth",userService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "userPage";
     }
 

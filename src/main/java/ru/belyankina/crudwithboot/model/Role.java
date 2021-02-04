@@ -3,6 +3,7 @@ package ru.belyankina.crudwithboot.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,17 +11,26 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
-    @Transient
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
+
+    public Role(String name, long id){
+        this.name = name;
+        this.id = id;
+    }
 
     public Role(String name){
         this.name = name;
+        if (name.equals("ADMIN")){
+            id = 1L;
+        } else if (name.equals("USER")){
+            id = 2L;
+        }
     }
 
     public Role(){}
@@ -43,8 +53,32 @@ public class Role implements GrantedAuthority {
         return Objects.hash(name);
     }
 
+    public void addUser (User user){
+        this.users.add(user);
+    }
+
+    public void removeUser(User user){
+        this.users.remove(user);;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 }

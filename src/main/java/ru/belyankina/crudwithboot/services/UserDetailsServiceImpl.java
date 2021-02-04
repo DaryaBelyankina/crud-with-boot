@@ -1,6 +1,7 @@
 package ru.belyankina.crudwithboot.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import ru.belyankina.crudwithboot.dao.UserDao;
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
+    @Lazy
     private UserDao userDao;
 
     @Override

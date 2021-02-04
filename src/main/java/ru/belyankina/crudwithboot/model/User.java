@@ -1,7 +1,13 @@
 package ru.belyankina.crudwithboot.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -31,9 +37,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "roles")
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
+
 
     public User() {
     }
@@ -97,10 +103,19 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+        for (Role role: roles){
+            role.addUser(this);
+        }
     }
 
     public void setRole(Role role){
         roles.add(role);
+        role.addUser(this);
+    }
+
+    public void removeRole(Role role){
+        roles.remove(role);
+        role.removeUser(this);
     }
 
     @Override
@@ -140,6 +155,11 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
+        StringBuilder rols = new StringBuilder();
+        for (Role role : this.getRoles()){
+            rols.append(role.getName() + ";");
+        }
+
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -147,7 +167,7 @@ public class User implements UserDetails {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + getRoles() +
+                ", roles=" + rols +
                 '}';
     }
 
@@ -162,5 +182,13 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, lastname, age, email, password, roles);
+    }
+
+    public String getRolesInString(){
+        StringBuilder result = new StringBuilder();
+        for (Role role: roles){
+            result.append(role.getName()).append(" ");
+        }
+        return result.toString();
     }
 }
