@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.belyankina.crudwithboot.model.User;
 import ru.belyankina.crudwithboot.services.UserService;
 
-import java.util.Set;
-
 
 @Controller
 @RequestMapping("/admin")
