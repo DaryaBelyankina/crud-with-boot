@@ -54,53 +54,37 @@
                                 <th>Delete</th>
                             </tr>
                         </thead>
-                    <tbody>
-                        <tr th:each="person:${usersList}" th:id="'row_' + ${person.getId()}">
-                            <td th:text="${person.getId()}"></td>
-                            <td th:text="${person.getName()}"></td>
-                            <td th:text="${person.getLastname()}"></td>
-                            <td th:text="${person.getAge()}"></td>
-                            <td th:text="${person.getEmail()}"></td>
-                            <td th:text="${person.getRolesInString()}"></td>
-                            <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit"
-                                        data-th-userid="${person.getId()}" data-th-username="${person.getName()}" data-th-userlastname="${person.getLastname()}"
-                                        data-th-userage="${person.getAge()}" data-th-useremail="${person.getEmail()}" data-th-roles="${person.getRolesInString()}"
-                                        data-th-userpassword="${person.getPassword()}">Edit</button></td>
-                            <td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete"
-                                        data-th-userid="${person.getId()}" data-th-username="${person.getName()}" data-th-userlastname="${person.getLastname()}"
-                                        data-th-userage="${person.getAge()}" data-th-useremail="${person.getEmail()}" data-th-roles="${person.getRolesInString()}"
-                                        >Delete</button></td>
-                        </tr>
+                    <tbody id="table_body">
                     </tbody>
                 </table>
                 </div>
                 <div class="tab-pane fade" id="createnew" role="tabpanel" aria-labelledby="createnewtab">
                     <div class="row bg-light ml-3"><h4>Add new user</h4></div>
-                    <form th:method="POST" th:action="@{/admin/create}" th:object="${userNew}">
+                    <form id="create_form">
                         <div class="offset-4 col-4">
                         <div class="form-group">
-                            <label for="namecreate">Name:</label>
-                            <input class="form-control" type="text" th:field="*{name}" id = "namecreate">
+                            <label for="name_create">Name:</label>
+                            <input class="form-control" type="text" id="name_create">
 
-                            <label for="last_namecreate">Last name: </label>
-                            <input class="form-control" type="text" th:field="*{lastname}" id = "last_namecreate">
+                            <label for="last_name_create">Last name: </label>
+                            <input class="form-control" type="text" id ="last_name_create">
 
-                            <label for="agecreate">Age: </label>
-                            <input class="form-control" type="number" th:field="*{age}" id = "agecreate">
+                            <label for="age_create">Age: </label>
+                            <input class="form-control" type="number" id="age_create">
 
-                            <label for="emailcreate">Email: </label>
-                            <input class="form-control" type="text" th:field="*{email}" id = "emailcreate">
+                            <label for="email_create">Email: </label>
+                            <input class="form-control" type="text" id="email_create">
 
-                            <label for="passwordcreate">Password: </label>
-                            <input class="form-control" type="password" th:field="*{password}" id = "passwordcreate">
+                            <label for="password_create">Password: </label>
+                            <input class="form-control" type="password" id="password_create">
 
-                            <label for="rolecreate">Role: </label>
-                            <select class="form-control" th:field="*{roles}" id="rolecreate" multiple>
-                                <option th:value="USER" selected>USER</option>
-                                <option th:value="ADMIN">ADMIN</option>
+                            <label for="role_create">Role: </label>
+                            <select class="form-control" id="role_create" multiple>
+                                <option id="user_role_create" value="USER" selected>USER</option>
+                                <option id="admin_role_create" value="ADMIN">ADMIN</option>
                             </select>
 
-                            <button type="submit" class="btn btn-success">Add new user</button>
+                            <button type="button" class="btn btn-success" onclick="createUser()">Add new user</button>
                         </div>
                         </div>
                     </form>
@@ -115,7 +99,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="col px-1 px-2">
-                    <form class="form-group"  th:method="PATCH" th:action="@{/admin/edit}" th:object="${user}">
+                    <form class="form-group">
                         <div class="modal-header">
                             <h4 class="modal-title text-left">Edit user</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -123,33 +107,33 @@
                             </button>
                         </div>
                         <div class="input-group-sm">
-                            <label class="col-form-label" for="id">ID:</label>
-                            <input class="form-control" type="text" id="id" readonly="" name="id" value="10">
+                            <label class="col-form-label" for="id_update">ID:</label>
+                            <input class="form-control" type="text" id="id_update" readonly="" name="id" value="">
 
-                            <label for="name">First name</label>
-                            <input class="form-control" type="text" id="name" th:field="*{name}">
+                            <label for="name_update">First name</label>
+                            <input class="form-control" type="text" id="name_update">
 
-                            <label for="lastname">Last name</label>
-                            <input class="form-control" type="text" id="lastname" th:field="*{lastname}">
+                            <label for="last_name_update">Last name</label>
+                            <input class="form-control" type="text" id="last_name_update">
 
-                            <label for="age">Age</label>
-                            <input class="form-control" type="number" id="age" th:field="*{age}">
+                            <label for="age_update">Age</label>
+                            <input class="form-control" type="number" id="age_update">
 
-                            <label for="email">Email</label>
-                            <input class="form-control" type="text" id="email" th:field="*{email}">
+                            <label for="email_update">Email</label>
+                            <input class="form-control" type="text" id="email_update">
 
-                            <label for="password">Password</label>
-                            <input class="form-control" type="password" id="password" th:field="*{password}" placeholder="Password">
+                            <label for="password_update">Password</label>
+                            <input class="form-control" type="password" id="password_update" placeholder="Password">
 
-                            <label for="role">Role </label>
-                            <select class="custom-select" id="role" multiple="" th:field="*{roles}">
-                                <option id="userrole" th:value="USER">USER</option>
-                                <option id="adminrole" th:value="ADMIN">ADMIN</option>
+                            <label for="role_update">Role </label>
+                            <select class="custom-select" id="role_update" multiple="">
+                                <option id="user_role_update" value="USER">USER</option>
+                                <option id="admin_role_update" value="ADMIN">ADMIN</option>
                             </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-info">Edit</button>
+                            <button type="button" onclick="updateUser()" class="btn btn-info">Edit</button>
                         </div>
                     </form>
                 </div>
@@ -163,7 +147,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="col px-1 px-2">
-                    <form class="form-group"  th:method="DELETE" th:action="@{/admin/delete}" th:object="${userForDelete}">
+                    <form class="form-group">
                         <div class="modal-header">
                             <h4 class="modal-title text-left">Delete user</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -171,33 +155,33 @@
                             </button>
                         </div>
                         <div class="input-group-sm">
-                            <label class="col-form-label" for="id">ID:</label>
-                            <input class="form-control" type="text" id="iddel" readonly="" name="id">
+                            <label class="col-form-label" for="id_del">ID:</label>
+                            <input class="form-control" type="text" id="id_del" readonly="" name="id">
 
-                            <label for="name">Name</label>
-                            <input class="form-control" type="text" id="namedel" th:field="*{name}">
+                            <label for="name_del">Name</label>
+                            <input class="form-control" type="text" id="name_del" readonly="">
 
-                            <label for="lastname">Last name</label>
-                            <input class="form-control" type="text" id="lastnamedel" th:field="*{lastname}">
+                            <label for="last_name_del">Last name</label>
+                            <input class="form-control" type="text" id="last_name_del" readonly="">
 
-                            <label for="age">Age</label>
-                            <input class="form-control" type="number" id="agedel" th:field="*{age}">
+                            <label for="age_del">Age</label>
+                            <input class="form-control" type="number" id="age_del" readonly="">
 
-                            <label for="email">Email</label>
-                            <input class="form-control" type="text" id="emaildel" th:field="*{email}">
+                            <label for="email_del">Email</label>
+                            <input class="form-control" type="text" id="email_del" readonly="">
 
-                            <label for="password">Password</label>
-                            <input class="form-control" type="password" id="passworddel" th:field="*{password}" placeholder="Password" value="">
+                            <label for="password_del">Password</label>
+                            <input class="form-control" type="password" id="password_del" readonly="" placeholder="Password" value="">
 
-                            <label for="role">Role</label>
-                            <select class="custom-select" id="roledel" multiple="" th:field="*{roles}">
-                                <option id="userroledel" th:value="USER">USER</option>
-                                <option id="adminroledel" th:value="ADMIN">ADMIN</option>
+                            <label for="role_del">Role</label>
+                            <select class="custom-select" id="role_del" multiple="" disabled>
+                                <option id="user_role_del" value="USER">USER</option>
+                                <option id="admin_role_del" value="ADMIN">ADMIN</option>
                             </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="button" onclick="deleteUser()" class="btn btn-danger">Delete</button>
                         </div>
                     </form>
                 </div>
@@ -212,27 +196,25 @@
 <script>
     $('#edit').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget)
-        const id = button.attr('userid')
-        const name = button.attr('username')
-        const lastname = button.attr('userlastname')
-        const age = button.attr('userage')
-        const email = button.attr('useremail')
-        const roles = button.attr('roles')
-        // const password = button.attr('userpassword')
+        const id = button.data('userid')
+        const name = button.data('username')
+        const lastname = button.data('userlastname')
+        const age = button.data('userage')
+        const email = button.data('useremail')
+        const roles = button.data('roles')
 
 
         const modal = $(this)
-        modal.find('#id').val(id)
-        modal.find('#name').val(name)
-        modal.find('#lastname').val(lastname)
-        modal.find('#age').val(age)
-        modal.find('#email').val(email)
-        // modal.find('#password').val(password)
+        modal.find('#id_update').val(id)
+        modal.find('#name_update').val(name)
+        modal.find('#last_name_update').val(lastname)
+        modal.find('#age_update').val(age)
+        modal.find('#email_update').val(email)
         if (roles.includes("ADMIN")){
-            modal.find('#adminrole').attr("selected", "selected")
+            modal.find('#admin_role_update').attr("selected", "selected")
         }
         if (roles.includes("USER")){
-            modal.find('#userrole').attr("selected", "selected")
+            modal.find('#user_role_update').attr("selected", "selected")
         }
     })
 </script>
@@ -240,27 +222,113 @@
 <script>
     $('#delete').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget)
-        const id = button.attr('userid')
-        const name = button.attr('username')
-        const lastname = button.attr('userlastname')
-        const age = button.attr('userage')
-        const email = button.attr('useremail')
-        const roles = button.attr('roles')
+        const id = button.data('userid')
+        const name = button.data('username')
+        const lastname = button.data('userlastname')
+        const age = button.data('userage')
+        const email = button.data('useremail')
+        const roles = button.data('roles')
 
 
         const modal = $(this)
-        modal.find('#iddel').val(id)
-        modal.find('#namedel').val(name)
-        modal.find('#lastnamedel').val(lastname)
-        modal.find('#agedel').val(age)
-        modal.find('#emaildel').val(email)
+        modal.find('#id_del').val(id)
+        modal.find('#name_del').val(name)
+        modal.find('#last_name_del').val(lastname)
+        modal.find('#age_del').val(age)
+        modal.find('#email_del').val(email)
         if (roles.includes("ADMIN")){
-            modal.find('#adminroledel').attr("selected", "selected")
+            modal.find('#admin_role_del').attr("selected", "selected")
         }
         if (roles.includes("USER")){
-            modal.find('#userroledel').attr("selected", "selected")
+            modal.find('#user_role_del').attr("selected", "selected")
         }
     })
+</script>
+
+<script>
+    async function drawUserTable(){
+        let response = await fetch("/admin/rest/users")
+        let users = await response.json()
+        let table = document.getElementById("table_body")
+        table.innerHTML = ""
+        for (let userIndex in users){
+        let user = users[userIndex]
+        table.innerHTML +=
+            `<tr>` +
+            `<td>${user.id}</td>` +
+            `<td>${user.name}</td>` +
+            `<td>${user.lastname}</td>` +
+            `<td>${user.age}</td>` +
+            `<td>${user.email}</td>` +
+            `<td>${user.rolesInString}</td>` +
+            `<td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit" ` +
+            `data-userid="${user.id}" ` +
+            `data-username="${user.name}" ` +
+            `data-userlastname="${user.lastname}" ` +
+            `data-userage="${user.age}" ` +
+            `data-useremail="${user.email}" ` +
+            `data-roles="${user.rolesInString}">Edit</button></td>` +
+            `<td><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete" ` +
+            `data-userid="${user.id}" ` +
+            `data-username="${user.name}" ` +
+            `data-userlastname="${user.lastname}" ` +
+            `data-userage="${user.age}" ` +
+            `data-useremail="${user.email}"` +
+            `data-roles="${user.rolesInString}">Delete</button></td>` +
+            `</tr>`
+        }
+    }
+    drawUserTable()
+
+    async function createUser(){
+        const name = document.getElementById("name_create").value
+        const lastname = document.getElementById("last_name_create").value
+        const age = document.getElementById("age_create").value
+        const email = document.getElementById("email_create").value
+        const pass = document.getElementById("password_create").value
+        let roles = $('#role_create').val()
+
+        let response = await fetch("/admin/rest/users/new", {
+            headers: {'Content-Type': 'application/json'},
+            method: "POST",
+            body: JSON.stringify({name: name, lastname: lastname, age: age, email: email, password: pass, roles: roles})})
+        if (response.ok){
+            drawUserTable()
+            alert('User created!')
+        }
+    }
+
+    async function deleteUser(){
+        const id = document.getElementById("id_del").value
+        let response = await fetch("/admin/rest/users/delete", {
+            headers: {'Content-Type': 'application/json'},
+            method: "DELETE",
+            body: JSON.stringify({id: id})})
+        if (response.ok){
+            drawUserTable()
+            $('.modal').modal('hide')
+        }
+    }
+
+    async function updateUser(){
+        const id = document.getElementById("id_update").value
+        const name = document.getElementById("name_update").value
+        const lastname = document.getElementById("last_name_update").value
+        const age = document.getElementById("age_update").value
+        const email = document.getElementById("email_update").value
+        const pass = document.getElementById("password_update").value
+        let roles = $('#role_update').val()
+
+
+        let response = await fetch("/admin/rest/users/update", {
+            headers: {'Content-Type': 'application/json'},
+            method: "PATCH",
+            body: JSON.stringify({id: id, name: name, lastname: lastname, age: age, email: email, password: pass, roles: roles})})
+        if (response.ok){
+            drawUserTable()
+            $('.modal').modal('hide')
+        }
+    }
 </script>
 
 </body>
